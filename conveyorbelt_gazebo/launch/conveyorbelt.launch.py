@@ -73,13 +73,14 @@ def generate_launch_description():
         'worlds',
         'conveyorbelt.world')
     # DECLARE Gazebo LAUNCH file:
-    gazebo = IncludeLaunchDescription(
-                PythonLaunchDescriptionSource([os.path.join(
-                    get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
-                launch_arguments={'world': conveyorbelt_gazebo}.items(),
-             )
+    gazebo_process = ExecuteProcess(
+            cmd=[
+                'gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', conveyorbelt_gazebo
+            ],
+            output='screen'
+        )
     
     # ***** RETURN LAUNCH DESCRIPTION ***** #
     return LaunchDescription([
-        gazebo, 
+        gazebo_process, 
     ])
